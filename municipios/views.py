@@ -1,5 +1,6 @@
 import requests
-from django.http import JsonResponse
+from django.shortcuts import render
+#from django.http import JsonResponse
 
 def listar_municipios(request):
     url = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/26/municipios'
@@ -8,6 +9,6 @@ def listar_municipios(request):
     if response.status_code == 200:
         dados = response.json()
         cidades = [cidade['nome'] for cidade in dados]
-        return JsonResponse({'cidades': cidades})
+        return render(request, 'municipios/lista_cidades.html', {'cidades': cidades})
     else:
-        return JsonResponse({'erro': 'Não foi possível acessar a API do IBGE'}, status=500)
+        return render(request, 'municipios/lista_cidades.html', {'erro': 'Erro ao acessar a API'})
